@@ -229,6 +229,40 @@
             color: #ccc;
         }
 
+        /* Technical Arsenal Section */
+        .tech-stack {
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            padding: 20px 0;
+        }
+
+        .tech-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .category {
+            background: #b0b3b8;
+            border-radius: 8px;
+            padding: 18px 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            text-align: center;
+        }
+
+        .category h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .category p {
+            font-size: 0.98rem;
+            color: #555;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .header h1 {
@@ -299,13 +333,35 @@
             <section class="section">
                 <h2 class="section-title">About Me</h2>
                 <div class="about-content">
-                    <p>I'm a B.Tech (Honours) graduate in Electronics and Communication Engineering from IIIT Hyderabad with a strong passion for data science and machine learning. Recently, I worked as an Associate Data Scientist at Head Digital Works, where I conducted comprehensive product analytics on gaming platforms, analyzed millions of game instances, and developed automated fraud detection systems using Python, SQL, and advanced analytics techniques.</p>
+                    <p>Hi there! I'm <strong>Vedant</strong>, and I just wrapped up my B.Tech in Electronics and Communication Engineering from <strong>IIIT Hyderabad</strong>. What really gets me excited is diving into data and finding stories hidden in the numbers. Recently, I spent a few months at Head Digital Works as an <strong><em>Associate Data Scientist</em></strong>, where I got to work with some impressive datasets – analyzing <strong>5.6+ lakh gaming instances</strong> and <strong>23+ crore in wagered amounts</strong> using Python and SQL. I also worked with fraud detection reports. It was fascinating to see how data could directly impact business decisions.</p>
                     
-                    <p>My technical expertise spans across multiple domains including data science, machine learning, IoT development, and software engineering. I have hands-on experience with MLOps pipelines, deep learning models, and have successfully led IoT research projects that secured top positions in national hackathons. My project portfolio demonstrates proficiency in building end-to-end ML solutions, from data ingestion and preprocessing to model deployment and monitoring.</p>
+                    <p>I'm one of those people who loves getting their hands dirty with different technologies. Whether it's building <em>machine learning models</em>, tinkering with <em>IoT devices</em>, or coding up <em>web applications</em>, I enjoy the challenge of making things work. I've had some great wins along the way too – like taking <strong>first place at the Hyderabad 5G-6G Hackathon</strong> and placing <strong>third nationally at India Mobile Congress</strong> with my IoT research. These experiences taught me that the best projects happen when you combine technical skills with real-world problem-solving</p>
                     
-                    <p>While I'm open to exploring opportunities across various technical roles, my primary focus lies in Data Science and Machine Learning positions, backed by extensive coursework, diverse project experience, and proven professional expertise in analytics and model development. I'm particularly interested in roles that combine technical innovation with business impact, leveraging data-driven insights to solve complex problems.</p>
+                    <p>While I'm genuinely curious about various tech roles and love exploring new areas, my heart is really set on <strong><em>data science and machine learning</em></strong> opportunities. There's something incredibly satisfying about turning messy data into <em>actionable insights</em> that can actually make a difference. I'm drawn to roles where I can use data not just to answer questions, but to help businesses make smarter decisions and solve meaningful problems.</p>
                 </div>
             </section>
+
+            <div class="tech-stack">
+                <h3>Technical Arsenal</h3>
+                <div class="tech-categories">
+                    <div class="category">
+                        <h4>Languages</h4>
+                        <p>Python, SQL, C/C++, MATLAB, Verilog</p>
+                    </div>
+                    <div class="category">
+                        <h4>Data Science & ML</h4>
+                        <p>TensorFlow, Scikit-learn, Pandas, NumPy, MLflow, DVC</p>
+                    </div>
+                    <div class="category">
+                        <h4>Tools & Platforms</h4>
+                        <p>Docker, AWS, Git, PowerBI, MicroStrategy, Jupyter</p>
+                    </div>
+                    <div class="category">
+                        <h4>Databases & Frameworks</h4>
+                        <p>MySQL, MongoDB, Flask, React, Node.js, Express</p>
+                    </div>
+                </div>
+            </div>
 
             <!-- Experience Section -->
             <section class="section">
@@ -316,7 +372,7 @@
                     <div class="experience-company">Head Digital Works, Hyderabad</div>
                     <div class="experience-duration">June 2025 – September 2025</div>
                     <div class="experience-description">
-                        Conducted comprehensive product analytics on gaming platform's redemption workflows, analyzing 5.6+ lakh game instances and 23+ crore wagered amounts. Designed feature strategies through cohort analysis and developed automated fraud detection systems, contributing to operational efficiency and compliance.
+                        Conducted comprehensive product analytics on gaming platform's redeem workflows, analyzing 5.6+ lakh game instances and 23+ crore wagered amounts. Designed feature strategies through cohort analysis and developed automated fraud detection systems, contributing to operational efficiency and compliance.
                     </div>
                 </div>
 
@@ -332,7 +388,7 @@
 
             <!-- Resume Section -->
             <section class="section">
-                <h2 class="section-title">Resume Downloads</h2>
+                <h2 class="section-title">Resume </h2>
                 <div class="resume-grid">
                     <div class="resume-card" onclick="openResume('data-science')">
                         <div class="resume-icon">
