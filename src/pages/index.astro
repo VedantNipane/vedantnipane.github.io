@@ -199,29 +199,15 @@ import Layout from '../layouts/Layout.astro';
       Resume
     </aside>
     <div class="block-body">
-      <h2>Three versions, one person.</h2>
-      <p class="muted">Pick whichever fits the role you&rsquo;re hiring for.</p>
+      <h2>One resume.</h2>
+      <p class="muted">Updated April 2026.</p>
 
-      <div class="resume-grid">
-        <a class="resume-card" href="/resumes/Vedant_Nipane_DS.pdf" target="_blank">
-          <span class="resume-kicker">01 &middot; PDF</span>
-          <span class="resume-title">Data Science</span>
-          <span class="resume-desc">ML projects, analytics, product insight</span>
-          <span class="resume-arrow" aria-hidden="true">→</span>
-        </a>
-        <a class="resume-card" href="/resumes/Vedant_Nipane_SDE.pdf" target="_blank">
-          <span class="resume-kicker">02 &middot; PDF</span>
-          <span class="resume-title">Software Dev</span>
-          <span class="resume-desc">Full-stack projects, backend work</span>
-          <span class="resume-arrow" aria-hidden="true">→</span>
-        </a>
-        <a class="resume-card" href="/resumes/Vedant_Nipane_Embedded.pdf" target="_blank">
-          <span class="resume-kicker">03 &middot; PDF</span>
-          <span class="resume-title">Embedded</span>
-          <span class="resume-desc">IoT, hardware, embedded development</span>
-          <span class="resume-arrow" aria-hidden="true">→</span>
-        </a>
-      </div>
+      <a class="resume-card resume-card--single" href="/resumes/Vedant_Nipane_Resume.pdf" target="_blank">
+        <span class="resume-kicker">PDF &middot; Apr 2026</span>
+        <span class="resume-title">Vedant Nipane</span>
+        <span class="resume-desc">Data Scientist &middot; ML &middot; LLM Evaluation &middot; Dataset Engineering</span>
+        <span class="resume-arrow" aria-hidden="true">→</span>
+      </a>
     </div>
   </section>
 
@@ -239,8 +225,9 @@ import Layout from '../layouts/Layout.astro';
         no format. Just a place to put things down.
       </p>
       <p class="journal-note">
-        <span class="journal-prompt">&rarr;</span> the first entry of this journal is being written.
-        Older pieces still live on <a href="https://medium.com/@lifeisgrey" target="_blank" rel="noopener">Medium</a>.
+        <span class="journal-prompt">&rarr;</span>
+        <a href="/journal">Read the journal</a> &mdash;
+        or find older pieces on <a href="https://medium.com/@lifeisgrey" target="_blank" rel="noopener">Medium</a>.
       </p>
     </div>
   </section>
@@ -469,6 +456,9 @@ import Layout from '../layouts/Layout.astro';
     grid-column: 1 / -1;
     color: var(--ink-soft);
     font-size: 0.92rem;
+  }
+  .resume-card--single {
+    max-width: 420px;
   }
 
   /* ========= Journal (inverted) ========= */
