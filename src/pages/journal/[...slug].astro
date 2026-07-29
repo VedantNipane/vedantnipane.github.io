@@ -1,0 +1,358 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('journal', ({ data }) => !data.draft);
+  return posts.map(post => ({
+    params: { slug: post.id.replace(/\.md$/, '') },
+    props: { post },
+  }));
+}
+
+interface Props { post: CollectionEntry<'journal'>; }
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('en-IN', {
+    year: 'numeric', month: 'long', day: 'numeric',
+  });
+}
+
+const isPoem = post.data.type === 'poem';
+---
+
+<Layout
+  title={`${post.data.title} — Vedant Nipane`}
+  description={post.data.excerpt ?? `${isPoem ? 'A poem' : 'An article'} by Vedant Nipane.`}
+>
+  {isPoem ? (
+    <!-- ======= POEM PAGE ======= -->
+    <div class="poem-page">
+      <nav class="post-nav">
+        <a href="/journal" class="back-link">← Journal</a>
+      </nav>
+
+      <header class="poem-header">
+        <div class="poem-meta">
+          <span class="post-type">poem</span>
+          <span class="post-date">{formatDate(post.data.date)}</span>
+        </div>
+        <h1 class="poem-title">{post.data.title}</h1>
+        {post.data.excerpt && <p class="poem-excerpt">{post.data.excerpt}</p>}
+      </header>
+
+      <div class="poem-rule" aria-hidden="true"></div>
+
+      <div class="poem-body">
+        <Content />
+      </div>
+
+      {post.data.tags.length > 0 && (
+        <footer class="post-footer">
+          {post.data.tags.map(tag => <span class="tag">{tag}</span>)}
+        </footer>
+      )}
+    </div>
+  ) : (
+    <!-- ======= ARTICLE PAGE ======= -->
+    <div class="article-page">
+
+      {post.data.cover && (
+        <div class="cover-wrap">
+          <img
+            class="cover-img"
+            src={post.data.cover}
+            alt={post.data.coverAlt ?? post.data.title}
+            loading="eager"
+          />
+        </div>
+      )}
+
+      <div class="article-inner">
+        <nav class="post-nav">
+          <a href="/journal" class="back-link">← Journal</a>
+        </nav>
+
+        <header class="article-header">
+          <div class="article-meta">
+            <span class="post-type">article</span>
+            <span class="post-date">{formatDate(post.data.date)}</span>
+          </div>
+          <h1 class="article-title">{post.data.title}</h1>
+          {post.data.excerpt && (
+            <p class="article-excerpt">{post.data.excerpt}</p>
+          )}
+        </header>
+
+        <div class="article-body">
+          <Content />
+        </div>
+
+        {post.data.tags.length > 0 && (
+          <footer class="post-footer">
+            {post.data.tags.map(tag => <span class="tag">{tag}</span>)}
+          </footer>
+        )}
+      </div>
+    </div>
+  )}
+</Layout>
+
+<style>
+  /* ===== Shared ===== */
+  .post-nav { margin-bottom: 2.5rem; }
+  .back-link {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    color: var(--ink-soft);
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--ink); }
+
+  .post-type {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent-ink);
+  }
+  .post-date {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+
+  .post-footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    padding: 0.15rem 0.5rem;
+  }
+
+  /* ===== POEM PAGE ===== */
+  .poem-page {
+    min-height: 100dvh;
+    background: var(--bg-invert);
+    color: var(--ink-on-dark);
+    padding: 3rem 1.75rem 6rem;
+  }
+
+  .poem-page .back-link { color: #b5ad9a; }
+  .poem-page .back-link:hover { color: var(--ink-on-dark); }
+  .poem-page .post-date { color: #b5ad9a; }
+
+  .poem-header {
+    max-width: 540px;
+    margin: 0 auto 2rem;
+    text-align: center;
+  }
+  .poem-meta {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .poem-title {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    color: var(--ink-on-dark);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin: 0 0 0.75rem;
+  }
+  .poem-excerpt {
+    font-style: italic;
+    color: #b5ad9a;
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  /* Dither divider between header and poem */
+  .poem-rule {
+    width: 120px;
+    height: 12px;
+    margin: 2rem auto;
+    background-image:
+      linear-gradient(45deg, var(--ink-on-dark) 25%, transparent 25%, transparent 75%, var(--ink-on-dark) 75%),
+      linear-gradient(45deg, var(--ink-on-dark) 25%, transparent 25%, transparent 75%, var(--ink-on-dark) 75%);
+    background-size: 4px 4px;
+    background-position: 0 0, 2px 2px;
+    opacity: 0.25;
+  }
+
+  .poem-body {
+    max-width: 440px;
+    margin: 0 auto;
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    line-height: 1.4;
+    color: var(--ink-on-dark);
+  }
+  /* Render each paragraph as a stanza (preserve line breaks) */
+  .poem-body :global(p) {
+    white-space: pre-wrap;
+    margin: 0 0 2.75rem;
+  }
+  .poem-body :global(hr) {
+    border: none;
+    border-top: 1px solid #3a3630;
+    margin: 2rem 0;
+  }
+
+  .poem-page .post-footer {
+    max-width: 440px;
+    margin: 3rem auto 0;
+    border-top-color: #3a3630;
+    justify-content: center;
+  }
+  .poem-page .tag {
+    background: transparent;
+    border-color: #3a3630;
+    color: #b5ad9a;
+  }
+
+  /* ===== ARTICLE PAGE ===== */
+  .article-page {
+    /* no extra wrapper needed — uses site bg */
+  }
+
+  /* Cover image */
+  .cover-wrap {
+    width: 100%;
+    max-height: 460px;
+    overflow: hidden;
+    margin-bottom: 0;
+    position: relative;
+  }
+  .cover-img {
+    width: 100%;
+    height: 460px;
+    object-fit: cover;
+    display: block;
+    /* Sepia-ish filter to match the warm site palette */
+    filter: grayscale(0.25) sepia(0.2) contrast(1.05);
+  }
+  /* Dither fade at the bottom of cover */
+  .cover-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--bg));
+  }
+
+  .article-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2.5rem 1.75rem 5rem;
+  }
+
+  .article-header { margin-bottom: 2.5rem; }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .article-title {
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: 0 0 1rem;
+  }
+  .article-excerpt {
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    line-height: 1.6;
+  }
+
+  /* Article body typography */
+  .article-body {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--ink);
+    margin-top: 2rem;
+  }
+  .article-body :global(p) { margin: 0 0 1.4rem; }
+  .article-body :global(h2) {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 2.5rem 0 0.75rem;
+    letter-spacing: -0.02em;
+  }
+  .article-body :global(h3) {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 2rem 0 0.5rem;
+  }
+  .article-body :global(a) {
+    color: var(--accent-ink);
+    text-decoration-color: var(--accent);
+  }
+  .article-body :global(strong) { font-weight: 600; }
+  .article-body :global(em) { font-style: italic; }
+  .article-body :global(blockquote) {
+    border-left: 3px solid var(--accent);
+    margin: 1.75rem 0;
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    color: var(--ink-soft);
+    font-style: italic;
+    font-size: 1.15rem;
+  }
+  .article-body :global(hr) {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 2.5rem 0;
+  }
+  .article-body :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    background: var(--bg-soft);
+    padding: 0.1em 0.4em;
+    border: 1px solid var(--rule);
+  }
+  .article-body :global(pre) {
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    padding: 1.25rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  .article-body :global(pre code) {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.9rem;
+  }
+  .article-body :global(ul), .article-body :global(ol) {
+    padding-left: 1.5rem;
+    margin: 0 0 1.4rem;
+  }
+  .article-body :global(li) { margin-bottom: 0.35rem; }
+
+  .article-page .post-footer { max-width: 720px; margin: 3rem auto 0; }
+</style>
