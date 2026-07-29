@@ -31,6 +31,14 @@ const {
 
     <title>{title}</title>
 
+    <script is:inline>
+      (function () {
+        var stored = localStorage.getItem('theme');
+        var theme = stored === 'light' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y74Q8X13Z0"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
@@ -53,6 +61,10 @@ const {
           <li><a href="/journal">Journal</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle light/dark theme">
+          <span class="theme-toggle-icon icon-sun" aria-hidden="true">&#9728;</span>
+          <span class="theme-toggle-icon icon-moon" aria-hidden="true">&#9789;</span>
+        </button>
       </div>
     </nav>
 
@@ -75,8 +87,41 @@ const {
       </div>
     </footer>
 
+    <script>
+      const themeToggle = document.getElementById('theme-toggle');
+      themeToggle?.addEventListener('click', () => {
+        const root = document.documentElement;
+        const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+      });
+    </script>
+
     <style is:global>
-      :root {
+      :root, :root[data-theme='dark'] {
+        /* Dark palette (default) */
+        --bg: #141210;
+        --bg-soft: #1e1b17;
+        --bg-invert: #f6f2e9;
+        --ink: #efe9db;
+        --ink-on-dark: #141210;
+        --ink-soft: #b5ad9a;
+        --rule: #3a3630;
+        --rule-strong: #efe9db;
+        --accent: #c9714c;       /* brighter terracotta for dark bg */
+        --accent-ink: #e2a37e;
+        --nav-bg: rgba(20, 18, 16, 0.88);
+        --input-bg: #1e1b17;
+        --focus-ring: rgba(201, 113, 76, 0.2);
+        /* colors to use inside "inverted" (opposite-of-page) surfaces */
+        --invert-rule: #d8d0bd;
+        --invert-ink-soft: #6a6355;
+        --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+        --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+        --font-mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+      }
+
+      :root[data-theme='light'] {
         /* Warm paper palette */
         --bg: #f6f2e9;
         --bg-soft: #efe9db;
@@ -88,9 +133,11 @@ const {
         --rule-strong: #1a1715;
         --accent: #a44a2e;       /* muted terracotta */
         --accent-ink: #7a3620;
-        --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-        --font-body: 'Inter', system-ui, -apple-system, sans-serif;
-        --font-mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+        --nav-bg: rgba(246, 242, 233, 0.92);
+        --input-bg: #fff;
+        --focus-ring: rgba(164, 74, 46, 0.15);
+        --invert-rule: #3a3630;
+        --invert-ink-soft: #b5ad9a;
       }
 
       *, *::before, *::after { box-sizing: border-box; }
@@ -155,7 +202,7 @@ const {
         position: sticky;
         top: 0;
         z-index: 10;
-        background: rgba(246, 242, 233, 0.92);
+        background: var(--nav-bg);
         backdrop-filter: blur(6px);
         border-bottom: 1px solid var(--rule);
       }
@@ -199,6 +246,26 @@ const {
       }
       .top-nav a:hover { color: var(--ink); text-decoration: none; }
 
+      .theme-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        margin-left: 1.25rem;
+        border: 1px solid var(--rule);
+        background: transparent;
+        color: var(--ink-soft);
+        font-size: 0.95rem;
+        line-height: 1;
+        cursor: pointer;
+        transition: border-color 0.15s, color 0.15s;
+      }
+      .theme-toggle:hover { border-color: var(--ink); color: var(--ink); }
+      .theme-toggle-icon { display: none; }
+      :root[data-theme='dark'] .theme-toggle .icon-sun { display: inline; }
+      :root[data-theme='light'] .theme-toggle .icon-moon { display: inline; }
+
       /* ====== Page container ====== */
       .site-main {
         max-width: 1100px;
@@ -237,9 +304,9 @@ const {
         border-radius: 2px;
       }
       .block--invert h2 { color: var(--ink-on-dark); }
-      .block--invert .block-label { color: #b5ad9a; }
+      .block--invert .block-label { color: var(--invert-ink-soft); }
       .block--invert .block-label .num { color: var(--accent); }
-      .block--invert a { color: var(--ink-on-dark); text-decoration-color: #554f42; }
+      .block--invert a { color: var(--ink-on-dark); text-decoration-color: var(--invert-rule); }
       .block--invert a:hover { color: var(--accent); text-decoration-color: var(--accent); }
 
       /* ====== Dither accent utility ====== */

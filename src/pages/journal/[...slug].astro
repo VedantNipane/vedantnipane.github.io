@@ -154,9 +154,9 @@ const isPoem = post.data.type === 'poem';
     padding: 3rem 1.75rem 6rem;
   }
 
-  .poem-page .back-link { color: #b5ad9a; }
+  .poem-page .back-link { color: var(--invert-ink-soft); }
   .poem-page .back-link:hover { color: var(--ink-on-dark); }
-  .poem-page .post-date { color: #b5ad9a; }
+  .poem-page .post-date { color: var(--invert-ink-soft); }
 
   .poem-header {
     max-width: 540px;
@@ -178,7 +178,7 @@ const isPoem = post.data.type === 'poem';
   }
   .poem-excerpt {
     font-style: italic;
-    color: #b5ad9a;
+    color: var(--invert-ink-soft);
     font-size: 1rem;
     margin: 0;
   }
@@ -211,20 +211,20 @@ const isPoem = post.data.type === 'poem';
   }
   .poem-body :global(hr) {
     border: none;
-    border-top: 1px solid #3a3630;
+    border-top: 1px solid var(--invert-rule);
     margin: 2rem 0;
   }
 
   .poem-page .post-footer {
     max-width: 440px;
     margin: 3rem auto 0;
-    border-top-color: #3a3630;
+    border-top-color: var(--invert-rule);
     justify-content: center;
   }
   .poem-page .tag {
     background: transparent;
-    border-color: #3a3630;
-    color: #b5ad9a;
+    border-color: var(--invert-rule);
+    color: var(--invert-ink-soft);
   }
 
   /* ===== ARTICLE PAGE ===== */
